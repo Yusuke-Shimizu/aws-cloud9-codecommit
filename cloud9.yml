@@ -1,0 +1,194 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  VPC Infrastructure setup and deployment of Cloud9 IDE for SRV306 AWS Re:Invent
+  Workshop 2018
+Resources:
+  Cloud9Instance:
+    Type: 'AWS::Cloud9::EnvironmentEC2'
+    Properties:
+      Description: >-
+        Cloud9 IDE for the SRV306 Serverless Authentication and Authorization
+        Workshop at AWS Re:Invent 2018
+      AutomaticStopTimeMinutes: 60
+      InstanceType: t2.micro
+      Name: !Sub '${AWS::StackName}-Cloud9Instance'
+      SubnetId: !Ref PublicSubnet1
+    DependsOn: GatewayToInternet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 7e4d405c-8efb-4670-86bc-495f6ff43979
+  Vpc:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 172.20.0.0/16
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-VPC'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: ae42eaac-3943-4c66-a3a5-9f5d1cb9bf95
+  PublicSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref Vpc
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs ''
+      CidrBlock: 172.20.1.0/24
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-PublicSubnet1'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 95239f17-c8d5-4b5a-8e8e-5442835e112c
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-InternetGateway'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 58ca1a33-afff-4ec7-bcb7-4541ebcbabfb
+  GatewayToInternet:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref Vpc
+      InternetGatewayId: !Ref InternetGateway
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: d0ee8e19-d05b-4eee-8309-f3271e478af7
+  PublicRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-InternetGateway'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 20292596-f89e-4fe0-a568-4b30e4fa13e4
+  PublicRoute:
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+    Type: 'AWS::EC2::Route'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 234ace12-c5fd-4be1-8715-aa4c4c331883
+  PubSubnet1RTAssoc:
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 2b0462b7-87f0-42fc-8586-2278c7f591d4
+Outputs:
+  Cloud9IDE:
+    Value: !Join 
+      - ''
+      - - 'https://'
+        - !Ref 'AWS::Region'
+        - .console.aws.amazon.com/cloud9/ide/
+        - !Ref Cloud9Instance
+        - '?region='
+        - !Ref 'AWS::Region'
+  Vpc:
+    Description: Vpc for Cloud9 instance
+    Value: !Ref Vpc
+    Export:
+      Name: !Sub '${AWS::StackName}-Vpc'
+  PublicSubnet1:
+    Description: Public Subnet for Cloud9 Instance
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: !Sub '${AWS::StackName}-PublicSubnet1'
+Metadata:
+  'AWS::CloudFormation::Designer':
+    58ca1a33-afff-4ec7-bcb7-4541ebcbabfb:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 60
+        'y': 750
+      z: 1
+      embeds: []
+    ae42eaac-3943-4c66-a3a5-9f5d1cb9bf95:
+      size:
+        width: 690
+        height: 600
+      position:
+        x: 60
+        'y': 90
+      z: 1
+      embeds:
+        - 20292596-f89e-4fe0-a568-4b30e4fa13e4
+        - 95239f17-c8d5-4b5a-8e8e-5442835e112c
+    20292596-f89e-4fe0-a568-4b30e4fa13e4:
+      size:
+        width: 240
+        height: 240
+      position:
+        x: 390
+        'y': 150
+      z: 2
+      parent: ae42eaac-3943-4c66-a3a5-9f5d1cb9bf95
+      embeds:
+        - 234ace12-c5fd-4be1-8715-aa4c4c331883
+      iscontainedinside:
+        - ae42eaac-3943-4c66-a3a5-9f5d1cb9bf95
+    234ace12-c5fd-4be1-8715-aa4c4c331883:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 420
+        'y': 210
+      z: 3
+      parent: 20292596-f89e-4fe0-a568-4b30e4fa13e4
+      embeds: []
+      isassociatedwith:
+        - 58ca1a33-afff-4ec7-bcb7-4541ebcbabfb
+      iscontainedinside:
+        - 20292596-f89e-4fe0-a568-4b30e4fa13e4
+    d0ee8e19-d05b-4eee-8309-f3271e478af7:
+      source:
+        id: ae42eaac-3943-4c66-a3a5-9f5d1cb9bf95
+      target:
+        id: 58ca1a33-afff-4ec7-bcb7-4541ebcbabfb
+    95239f17-c8d5-4b5a-8e8e-5442835e112c:
+      size:
+        width: 240
+        height: 240
+      position:
+        x: 90
+        'y': 150
+      z: 2
+      parent: ae42eaac-3943-4c66-a3a5-9f5d1cb9bf95
+      embeds:
+        - 7e4d405c-8efb-4670-86bc-495f6ff43979
+      iscontainedinside:
+        - ae42eaac-3943-4c66-a3a5-9f5d1cb9bf95
+    2b0462b7-87f0-42fc-8586-2278c7f591d4:
+      source:
+        id: 20292596-f89e-4fe0-a568-4b30e4fa13e4
+      target:
+        id: 95239f17-c8d5-4b5a-8e8e-5442835e112c
+    7e4d405c-8efb-4670-86bc-495f6ff43979:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 120
+        'y': 210
+      z: 3
+      parent: 95239f17-c8d5-4b5a-8e8e-5442835e112c
+      embeds: []
+      iscontainedinside:
+        - 95239f17-c8d5-4b5a-8e8e-5442835e112c
+      dependson:
+        - d0ee8e19-d05b-4eee-8309-f3271e478af7
