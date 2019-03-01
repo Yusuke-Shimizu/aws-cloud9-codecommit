@@ -1,3 +1,6 @@
+# TODO
+- [ ] set-cloud9にgit-secrets入れるロール追加
+
 # reference
 * [AWS Cloud9、AWS CodeCommit、Troposphereを使ったCloudFormationテンプレートの作成 | Amazon Web Services ブログ](https://aws.amazon.com/jp/blogs/news/using-aws-cloud9-aws-codecommit-and-troposphere-to-author-aws-cloudformation-templates/)
 * [aws-samples/aws-serverless-workshops at 142cd9bbf78950dbaa2ad6d6e59d6805aa77c63c](https://github.com/aws-samples/aws-serverless-workshops/tree/142cd9bbf78950dbaa2ad6d6e59d6805aa77c63c)
