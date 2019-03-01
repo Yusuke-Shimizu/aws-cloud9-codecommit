@@ -1,0 +1,10 @@
+---
+- hosts: all
+  connection: local
+
+  roles:
+  # After you call this module, you can use this
+    - suzuki-shunsuke.ghq-module
+
+  tasks:
+    - include_tasks: tasks/main.yml

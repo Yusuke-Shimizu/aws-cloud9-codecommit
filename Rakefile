@@ -25,25 +25,29 @@ namespace :aws do
 
   namespace :codebuild do
     desc "Run cloudformation stack"
+    template = "file://codecommit-pipeline.yml"
+    region = "ap-northeast-1"
+    stack_name = "codebuild-pipeline"
     task :create do
       sh "aws cloudformation create-stack \\
-        --stack-name codebuild-pipeline \\
-        --region ap-northeast-1 \\
-        --template-body file://codecommit-pipeline.yml \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
+        --template-body #{template} \\
         --capabilities CAPABILITY_NAMED_IAM \\
         | jq ."
     end
 
     desc "Check cloudformation stack"
     task :check do
+      
       sh "aws cloudformation describe-stacks \\
-        --stack-name codebuild-pipeline \\
-        --region ap-northeast-1 \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
         --query \"Stacks[*].[StackName,CreationTime,StackStatus]\" \\
         --output table"
       sh "aws cloudformation describe-stack-events \\
-        --stack-name codebuild-pipeline \\
-        --region ap-northeast-1 \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
         --query \"StackEvents[*].[ResourceType,Timestamp,ResourceStatus,ResourceStatusReason]\" \\
         --output table"
     end
@@ -51,8 +55,46 @@ namespace :aws do
     desc "Delete cloudformation stack"
     task :delete do
       sh "aws cloudformation delete-stack \\
-        --stack-name codebuild-pipeline \\
-        --region ap-northeast-1 \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
+        | jq ."
+    end
+  end
+
+  namespace :fargate do
+    desc "Run cloudformation stack"
+    template = "file://fargate/ecs-refarch-continuous-deployment.yaml"
+    region = "ap-northeast-1"
+    stack_name = "create_fargate"
+    task :create do
+      sh "aws cloudformation create-stack \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
+        --template-body #{template} \\
+        --capabilities CAPABILITY_NAMED_IAM \\
+        | jq ."
+    end
+
+    desc "Check cloudformation stack"
+    task :check do
+      
+      sh "aws cloudformation describe-stacks \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
+        --query \"Stacks[*].[StackName,CreationTime,StackStatus]\" \\
+        --output table"
+      sh "aws cloudformation describe-stack-events \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
+        --query \"StackEvents[*].[ResourceType,Timestamp,ResourceStatus,ResourceStatusReason]\" \\
+        --output table"
+    end
+
+    desc "Delete cloudformation stack"
+    task :delete do
+      sh "aws cloudformation delete-stack \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
         | jq ."
     end
   end
@@ -83,6 +125,7 @@ namespace :ansible do
 
   desc "install requirements from galaxy"
   task :install do
+    sh 'sudo yum install ansible -y'
     sh 'ansible-galaxy install -r requirements.yml'
   end
 end

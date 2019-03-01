@@ -237,3 +237,9 @@ Resources:
                 - Name: MyApp
     DependsOn:
       - CodeCommitRepo
+Outputs:
+  Repository:
+    Description: Repository for ECR
+    Value: !Ref Repository
+    Export:
+      Name: !Sub '${AWS::StackName}-Repository'
