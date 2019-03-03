@@ -11,8 +11,15 @@ RSpec.shared_context 'check_command' do
 	its('exit_status') { should eq 0 }
 end
 
-# check echo command
-describe command("echo template") do
+# check inspec command
+command_list = ["ansible", "inspec", "docker", "docker-compose", "aws", "ecs-cli"]
+command_list.each{|command_name|
+	describe command(command_name) do
+		it { should exist }
+	end
+}
+
+describe command("git secrets --list") do
 	include_context 'check_command'
-	its('stdout') { should eq 'template' }
+	its('stdout') { should match 'secrets.providers git secrets --aws-provider' }
 end

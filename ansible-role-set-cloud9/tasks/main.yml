@@ -1,20 +1,6 @@
 ---
 # tasks file for ansible-role-set-cloud9
-- name: clone repo
-  git: 
-    repo: https://github.com/awslabs/git-secrets.git
-    dest: /home/ec2-user/environment/aws-cloud9-codecommit/
-
-- name: clone repo
-  shell: "sudo make install"
-  register: result
-  changed_when: no
-  args:
-    chdir: /home/ec2-user/environment/aws-cloud9-codecommit/git-secrets/
-
-- name: clone repo
-  shell: "git secrets --install"
-  register: result
-  changed_when: no
-  args:
-    chdir: /home/ec2-user/environment/aws-cloud9-codecommit
+- import_tasks: "install-inspec.yml"
+- import_tasks: "install-git-secrets.yml"
+- import_tasks: "install-docker-compose.yml"
+- import_tasks: "install-ecs-cli.yml"
