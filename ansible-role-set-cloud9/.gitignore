@@ -104,4 +104,4 @@ build-iPhoneSimulator/
 
 # End of https://www.gitignore.io/api/ruby,macos,linux,ansible
 
-ansible.log
+*ansible.log
