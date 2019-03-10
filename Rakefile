@@ -125,7 +125,7 @@ namespace :ansible do
 
   desc "install requirements from galaxy"
   task :install do
-    sh 'sudo yum install ansible -y'
+    # sh 'sudo yum install ansible -y'
     sh 'sudo pip install ansible ansible-lint'
     # sh 'ansible-galaxy install -r requirements.yml'
   end

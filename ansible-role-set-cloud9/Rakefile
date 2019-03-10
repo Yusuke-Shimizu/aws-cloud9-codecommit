@@ -42,7 +42,7 @@ end
 namespace :ci do
   desc "Run CI test"
   task :default do
-    Rake::Task["inspec:first"].invoke()
+    Rake::Task["ansible:build"].invoke()
     Rake::Task["inspec:default"].invoke()
     Rake::Task["inspec:second"].invoke()
   end
