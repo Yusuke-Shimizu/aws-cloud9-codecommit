@@ -4,3 +4,4 @@
 - import_tasks: "install-git-secrets.yml"
 - import_tasks: "install-docker-compose.yml"
 - import_tasks: "install-ecs-cli.yml"
+- import_tasks: "install-awslogs.yml"

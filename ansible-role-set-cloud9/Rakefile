@@ -30,7 +30,7 @@ namespace :ansible do
 
   desc "build"
   task :build do
-    sh 'ansible-playbook main.yml -vv'
+    sh 'ansible-playbook main.yml'
   end
 
   desc "install requirements from galaxy"

@@ -1,6 +1,7 @@
 ---
 # tasks file for ansible-role-set-cloud9
 - name: install inspec
-  shell: "curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec"
+  shell: "curl https://omnitruck.chef.io/install.sh | bash -s -- -P inspec"
   register: result
   changed_when: no
+  become: yes
