@@ -1,0 +1,7 @@
+---
+# tasks file for ansible-role-set-cloud9
+- name: install jq
+  yum:
+    name: jq
+    state: latest
+  become: yes
