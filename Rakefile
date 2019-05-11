@@ -2,24 +2,39 @@ require 'rake'
 
 namespace :aws do
   namespace :cloud9 do
+    template = "file://cloud9.yml"
+    region = "ap-northeast-1"
+    stack_name = "cloud9"
+
     desc "Run cloudformation stack"
     task :create do
-      sh "aws cloudformation create-stack --stack-name cloud9 --region ap-southeast-1 --template-body file://cloud9.yml | jq ."
+      sh "aws cloudformation create-stack \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
+        --template-body #{template} \\
+        | jq ."
     end
 
     desc "Check cloudformation stack"
     task :check do
-      # sh "aws cloudformation describe-stacks --stack-name cloud9 --region ap-southeast-1 | jq ."
-      # sh "aws cloudformation describe-stack-events --stack-name cloud9 --region ap-southeast-1 | jq ."
-      sh "aws cloudformation describe-stacks --stack-name cloud9 --region ap-southeast-1 --query \"Stacks[*].[StackName,CreationTime,StackStatus]\" --output table"
-      sh "aws cloudformation describe-stack-events --stack-name cloud9 --region ap-southeast-1 --query \"StackEvents[*].[ResourceType,Timestamp,ResourceStatus,ResourceStatusReason]\" --output table"
-      # sh "aws cloudformation describe-stacks --stack-name cloud9 --region ap-southeast-1 --output table"
-      # sh "aws cloudformation describe-stack-events --stack-name cloud9 --region ap-southeast-1 | jq ."
+      sh "aws cloudformation describe-stacks \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
+        --query \"Stacks[*].[StackName,CreationTime,StackStatus]\" \\
+        --output table"
+      sh "aws cloudformation describe-stack-events \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
+        --query \"StackEvents[*].[ResourceType,Timestamp,ResourceStatus,ResourceStatusReason]\" \\
+        --output table"
     end
 
     desc "Delete cloudformation stack"
     task :delete do
-      sh "aws cloudformation delete-stack --stack-name cloud9 --region ap-southeast-1 | jq ."
+      sh "aws cloudformation delete-stack \\
+        --stack-name #{stack_name} \\
+        --region #{region} \\
+        | jq ."
     end
   end
 

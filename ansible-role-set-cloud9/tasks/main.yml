@@ -5,4 +5,5 @@
 - import_tasks: "install-docker-compose.yml"
 - import_tasks: "install-ecs-cli.yml"
 - import_tasks: "install-awslogs.yml"
+- import_tasks: "install-molecule.yml"
 - import_tasks: "install-packages.yml"

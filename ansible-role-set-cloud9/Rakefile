@@ -36,6 +36,7 @@ namespace :ansible do
   desc "install requirements from galaxy"
   task :install do
     sh 'ansible-galaxy install -r requirements.yml'
+    sh 'ansible-galaxy list'
   end
 end
 

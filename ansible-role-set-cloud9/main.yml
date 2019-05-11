@@ -1,10 +1,16 @@
 ---
 - hosts: all
   connection: local
+  become: yes
 
-  # roles:
-  # # After you call this module, you can use this
-  #   - suzuki-shunsuke.ghq-module
+  roles:
+    - role: william-yeh.fluentd
 
-  tasks:
-    - include_tasks: tasks/main.yml
+  vars:
+    tdagent_plugins:
+      - fluent-plugin-multiprocess
+      - fluent-plugin-flowcounter
+      - fluent-plugin-elasticsearch
+
+  # tasks:
+  #   - include_tasks: tasks/main.yml
