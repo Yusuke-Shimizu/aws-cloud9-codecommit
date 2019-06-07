@@ -5,6 +5,7 @@
 
   roles:
     - role: william-yeh.fluentd
+    - role: andrewrothstein.terraform
 
   vars:
     tdagent_plugins:

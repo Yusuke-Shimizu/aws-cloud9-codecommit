@@ -1,3 +1,4 @@
 ---
 - src: suzuki-shunsuke.ghq-module
 - src: william-yeh.fluentd
+- src: andrewrothstein.terraform
