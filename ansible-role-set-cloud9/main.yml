@@ -13,5 +13,5 @@
       - fluent-plugin-flowcounter
       - fluent-plugin-elasticsearch
 
-  # tasks:
-  #   - include_tasks: tasks/main.yml
+  tasks:
+    - include_tasks: tasks/main.yml

@@ -23,6 +23,9 @@ describe command("git secrets --list") do
 	include_context 'check_command'
 	its('stdout') { should match 'secrets.providers git secrets --aws-provider' }
 end
+describe command("git secrets --scan -r") do
+	include_context 'check_command'
+end
 
 describe service('td-agent') do
 	it { should be_installed }
