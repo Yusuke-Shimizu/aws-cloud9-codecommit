@@ -12,7 +12,7 @@ RSpec.shared_context 'check_command' do
 end
 
 # check command
-command_list = ["ansible", "inspec", "docker", "docker-compose", "aws", "ecs-cli", "awslogs", "molecule", "jq", "terraform"]
+command_list = ["ansible", "inspec", "docker", "docker-compose", "aws", "ecs-cli", "awslogs", "molecule", "jq", "terraform", "pulumi"]
 command_list.each{|command_name|
 	describe command(command_name) do
 		it { should exist }

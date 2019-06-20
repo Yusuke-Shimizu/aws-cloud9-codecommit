@@ -1,0 +1,7 @@
+---
+# tasks file for ansible-role-set-cloud9
+- name: install pulumi
+  shell: "curl -fsSL https://get.pulumi.com | sh"
+  register: result
+  changed_when: no
+  become: yes

@@ -7,3 +7,4 @@
 - import_tasks: "install-awslogs.yml"
 - import_tasks: "install-molecule.yml"
 - import_tasks: "install-packages.yml"
+- import_tasks: "install-pulumi.yml"
