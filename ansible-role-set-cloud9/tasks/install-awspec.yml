@@ -1,0 +1,5 @@
+---
+# tasks file for ansible-role-set-cloud9
+- gem:
+    name: awspec
+  become: no

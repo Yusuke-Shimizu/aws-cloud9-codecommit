@@ -35,3 +35,7 @@ end
 describe command("service td-agent status") do
 	its('stdout') { should match (/running/) }
 end
+
+describe gem('awspec') do
+	it { should be_installed }
+end
