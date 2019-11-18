@@ -1,7 +1,8 @@
 ---
 # tasks file for ansible-role-set-cloud9
 - name: install docker-compose
-  shell: "curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` | tee -a /usr/local/bin/docker-compose"
+  # shell: "curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` | tee -a /usr/local/bin/docker-compose"
+  shell: "curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
   register: result
   changed_when: no
   become: yes
